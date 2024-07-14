@@ -2,15 +2,18 @@ package com.system.coupon.data.model;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import com.system.coupon.data.ex.UnknownRoleForUserException;
-import org.hibernate.annotations.*;
 
+@Entity
 @Getter
 @Setter
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user")
 public class User {
     @Id
@@ -22,22 +25,15 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    //        @Any
-//        @AnyDiscriminator(DiscriminatorType.STRING)
-//        @AnyDiscriminatorValue(discriminator = "1", entity = Customer.class)
-//        @AnyDiscriminatorValue(discriminator = "2", entity = Company.class)
-//        @AnyKeyJavaClass(Long.class)
-//        @JoinColumn(name = "client_id")
-    @ManyToOne
+    @OneToOne()
     @JoinColumn(name = "client_id")
     private Client client;
-
-    public User() { /*Empty*/ }
 
     public User(String email, String password, int role) throws UnknownRoleForUserException {
         this.email = email;
         this.password = password;
         this.id = 0;
+
         if (role == 1) {
             this.client = new Customer();
             this.client.setId(0);

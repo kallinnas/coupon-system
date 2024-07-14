@@ -1,20 +1,23 @@
 package com.system.coupon.data.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.system.coupon.data.ex.AlreadyPurchasedCouponException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.system.coupon.data.model.Client.NO_ID;
 
+@Entity
 @Getter
 @Setter
-@Entity
+@NoArgsConstructor
 @Table(name = "coupon")
 public class Coupon {
 
@@ -29,7 +32,7 @@ public class Coupon {
 
     @ManyToMany(mappedBy = "coupons", cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     @JsonIgnore
-    private List<Customer> customers;
+    private List<Customer> customers = new ArrayList<>();
 
     private String title;
     private LocalDate startDate;
@@ -39,10 +42,6 @@ public class Coupon {
     private double price;
     private String description;
     private String imageURL;
-
-    public Coupon() {
-        this.customers = new ArrayList<>();
-    }
 
     public Coupon(long id) {
         this.id = id;
@@ -84,7 +83,7 @@ public class Coupon {
                 '}';
     }
 
-    public boolean similarCoupon(Coupon coupon){
+    public boolean similarCoupon(Coupon coupon) {
         return this.getTitle().equals(coupon.getTitle())
                 && this.getCategory() == coupon.getCategory()
                 && this.getPrice() == coupon.getPrice()

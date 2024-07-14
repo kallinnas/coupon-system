@@ -1,17 +1,18 @@
 package com.system.coupon.data.model;
 
 import com.system.coupon.data.ex.AlreadyPurchasedCouponException;
-import lombok.Getter;
-import lombok.Setter;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
-@Table(name = "customer")
+@DiscriminatorValue("1")
+@EqualsAndHashCode(callSuper = true)
 public class Customer extends Client {
 
     @Column(name = "`first_Name`")

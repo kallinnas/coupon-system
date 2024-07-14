@@ -7,9 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-//@MappedSuperclass
-//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.INTEGER)
 public abstract class Client {
     public static final int NO_ID = -1;
     @Id

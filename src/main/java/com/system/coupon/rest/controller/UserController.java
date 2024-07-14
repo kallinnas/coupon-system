@@ -1,13 +1,11 @@
 package com.system.coupon.rest.controller;
 
-import com.system.coupon.data.ex.UnknownRoleForUserException;
 import com.system.coupon.data.model.Company;
-import com.system.coupon.data.model.Token;
 import com.system.coupon.data.model.User;
 import com.system.coupon.service.CompanyService;
-import com.system.coupon.service.UserService;
-import com.system.coupon.service.ex.UserIsAlreadyExistException;
+import com.system.coupon.service.IUserService;
 import com.system.coupon.service.ex.UserIsNotExistException;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
@@ -15,20 +13,25 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Data
+class RegistrationRequest {
+    private String email;
+    private String password;
+    private int role;
+}
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/")
 public class UserController {
-    private UserService service;
+    private IUserService service;
     private ApplicationContext context;
 
     @Autowired
-    public UserController(UserService service, ApplicationContext context) {
+    public UserController(IUserService service, ApplicationContext context) {
         this.service = service;
         this.context = context;
     }
-
-
 
     @GetMapping("user/getAllCompanies")
     public ResponseEntity<List<Company>> getAllCompanies() {
@@ -49,14 +52,11 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("reg/{email}/{password}/{role}")
-    public ResponseEntity<Token> registration(@PathVariable String email,
-                                              @PathVariable String password,
-                                              @PathVariable int role) throws UserIsAlreadyExistException, UnknownRoleForUserException {
-        service.createUser(email, password, role);
-        LoginController loginController = context.getBean(LoginController.class);
-        return loginController.login(email, password);
-    }
+    //    @PostMapping("reg/{email}/{password}/{role}")
+    //    public ResponseEntity<Token> registration(@PathVariable String email,
+    //                                              @PathVariable String password,
+    //                                              @PathVariable int role) throws UserIsAlreadyExistException, UnknownRoleForUserException {
+
 
 
     // UPDATE ACCOUNT

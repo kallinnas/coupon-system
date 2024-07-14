@@ -19,7 +19,7 @@ import java.util.UUID;
 @RequestMapping("/api")
 public class LoginController {
 
-    private static final int LENGTH_TOKEN = 15;
+
     private Map<String, ClientSession> tokensMap;
     private UserSystem system;
     private UserRepository userRepo;
@@ -35,15 +35,7 @@ public class LoginController {
     }
 
 
-    @PostMapping("/login/{login}/{password}")
-    public ResponseEntity<Token> login(@PathVariable String login, @PathVariable String password) throws InvalidLoginException {
-            ClientSession session = system.createClientSession(login, password);
-            String token = generateToken();
-            tokensMap.put(token, session);
-            Token myToken = new Token();
-            myToken.setToken(token);
-            return ResponseEntity.ok(myToken);
-    }
+
 
     @GetMapping("/{token}/getAccount")
     public ResponseEntity<Integer> customersAccount(@PathVariable String token){
@@ -51,7 +43,5 @@ public class LoginController {
         return ResponseEntity.ok(session.getRole());
     }
 
-    private String generateToken() {
-        return UUID.randomUUID().toString().replaceAll("-", "").substring(0, LENGTH_TOKEN);
-    }
+
 }

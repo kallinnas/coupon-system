@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "company")
+@DiscriminatorValue("2")
 public class Company extends Client {
 
     @Column(name = "`name`")
